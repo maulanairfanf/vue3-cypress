@@ -9,9 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "cypress": "^13.13.3",
     "vue": "^3.4.35"
   },
   "devDependencies": {
+    "@cypress/vite-dev-server": "^5.1.1",
+    "@cypress/vue": "^6.0.1",
     "@vitejs/plugin-vue": "^5.1.2",
     "vite": "^5.4.0"
   }
