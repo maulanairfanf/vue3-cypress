@@ -3,33 +3,25 @@
 		<h2>Product List</h2>
 
 		<!-- Filter and Sort Controls -->
-		<div>
-			<input v-model="searchQuery" placeholder="Search products" />
-			<select v-model="selectedCategory">
-				<option value="">All Categories</option>
-				<option value="Electronics">Electronics</option>
-				<option value="Clothing">Clothing</option>
-				<option value="Books">Books</option>
-			</select>
-			<select v-model="sortOrder">
-				<option value="asc">Sort by Price: Low to High</option>
-				<option value="desc">Sort by Price: High to Low</option>
-			</select>
-			<button @click="handleReset">Reset</button>
-		</div>
+		<FilterControls
+			:search-query="searchQuery"
+			:selected-category="selectedCategory"
+			:sort-order="sortOrder"
+			@update-search-query="updateSearchQuery"
+			@update-category="updateCategory"
+			@update-sort-order="updateSortOrder"
+			@reset-filters="handleReset"
+		/>
 
 		<!-- Product List -->
-		<ul>
-			<li v-for="product in filteredAndSortedProducts" :key="product.id">
-				<span>{{ product.name }} - ${{ product.price }}</span>
-				<span> ({{ product.category }})</span>
-			</li>
-		</ul>
+		<ProductList :products="filteredAndSortedProducts" />
 	</div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
+import FilterControls from './FilterControls.vue'
+import ProductList from './ProductList.vue'
 
 const products = ref([
 	{ id: 1, name: 'Smartphone', category: 'Electronics', price: 699 },
@@ -68,13 +60,21 @@ const filteredAndSortedProducts = computed(() => {
 	return filteredProducts
 })
 
+function updateSearchQuery(query) {
+	searchQuery.value = query
+}
+
+function updateCategory(category) {
+	selectedCategory.value = category
+}
+
+function updateSortOrder(order) {
+	sortOrder.value = order
+}
+
 function handleReset() {
 	searchQuery.value = ''
 	selectedCategory.value = ''
 	sortOrder.value = 'asc'
 }
 </script>
-
-<style scoped>
-/* Add any necessary styles here */
-</style>
