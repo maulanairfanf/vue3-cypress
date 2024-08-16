@@ -1,12 +1,14 @@
 <template>
-	<div>
+	<div data-cy="filter-controls">
 		<input
+			data-cy="name-search"
 			v-model="localSearchQuery"
 			placeholder="Search products"
 			@input="emitSearchQuery"
 			style="margin: 5px"
 		/>
 		<select
+			data-cy="category-select"
 			v-model="localSelectedCategory"
 			@change="emitCategory"
 			style="margin: 5px"
@@ -17,6 +19,7 @@
 			<option value="Books">Books</option>
 		</select>
 		<select
+			data-cy="sort-order-select"
 			v-model="localSortOrder"
 			@change="emitSortOrder"
 			style="margin: 5px"
@@ -24,7 +27,9 @@
 			<option value="asc">Sort by Price: Low to High</option>
 			<option value="desc">Sort by Price: High to Low</option>
 		</select>
-		<button @click="emitReset" style="margin: 5px">Reset</button>
+		<button data-cy="reset-button" @click="emitReset" style="margin: 5px">
+			Reset
+		</button>
 	</div>
 </template>
 

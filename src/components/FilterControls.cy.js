@@ -18,9 +18,9 @@ describe('FilterControls Component', () => {
 			},
 		})
 
-		cy.get('input[placeholder="Search products"]').type('Laptop')
-		cy.get('select').eq(0).select('Electronics')
-		cy.get('select').eq(1).select('desc')
+		cy.get('[data-cy="name-search"]').type('Laptop')
+		cy.get('[data-cy="category-select"]').select('Electronics')
+		cy.get('[data-cy="sort-order-select"]').select('desc')
 
 		cy.get('@onUpdateSearchQuery').should('have.been.calledWith', 'Laptop')
 		cy.get('@onUpdateCategory').should('have.been.calledWith', 'Electronics')
@@ -39,7 +39,7 @@ describe('FilterControls Component', () => {
 			},
 		})
 
-		cy.get('button').contains('Reset').click()
+		cy.get('[data-cy="reset-button"]').click()
 		cy.get('@onResetFilters').should('have.been.calledOnce')
 	})
 })

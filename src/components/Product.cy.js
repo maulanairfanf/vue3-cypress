@@ -1,31 +1,45 @@
 import { mount } from '@cypress/vue'
 import Product from './Product.vue'
 
-describe('Product', () => {
-	it('filters and sorts products correctly', () => {
+describe('Product Component', () => {
+	beforeEach(() => {
 		mount(Product)
-
-		cy.get('input[placeholder="Search products"]').type('Laptop')
-		cy.get('select').eq(0).select('Electronics')
-		cy.get('select').eq(1).select('desc')
-
-		cy.get('ul li').should('have.length', 1)
-		cy.get('ul li').first().should('contain', 'Laptop')
 	})
 
-	it('resets filters correctly', () => {
-		mount(Product)
+	it('renders the Product component with FilterControls and ProductList', () => {
+		cy.get('[data-cy="filter-controls"]').should('exist')
+		cy.get('[data-cy="product-list"]').should('exist')
+	})
 
-		// Set filters
-		cy.get('input[placeholder="Search products"]').type('Laptop')
-		cy.get('select').eq(0).select('Electronics')
-		cy.get('select').eq(1).select('desc')
+	it('filters the product list based on search input', () => {
+		cy.get('[data-cy="name-search"]').type('Laptop')
+		cy.get('[data-cy="product-list"]')
+			.find('[data-cy="product-item"]')
+			.should('have.length', 1)
+			.and('contain', 'Laptop')
+	})
 
-		// Reset filters
-		cy.get('button').contains('Reset').click()
+	it('filters the product list based on selected category', () => {
+		cy.get('[data-cy="category-select"]').select('Clothing')
+		cy.get('[data-cy="product-list"]')
+			.find('[data-cy="product-item"]')
+			.should('have.length', 1)
+			.and('contain', 'T-shirt')
+	})
 
-		cy.get('input[placeholder="Search products"]').should('have.value', '')
-		cy.get('select').eq(0).should('have.value', '')
-		cy.get('select').eq(1).should('have.value', 'asc')
+	it('sorts the product list by price', () => {
+		cy.get('[data-cy="sort-order-select"]').select('desc')
+		cy.get('[data-cy="product-list"]')
+			.find('[data-cy="product-item"]')
+			.first()
+			.should('contain', 'Laptop')
+	})
+
+	it('resets the filters correctly', () => {
+		cy.get('[data-cy="name-search"]').type('Laptop')
+		cy.get('[data-cy="reset-button"]').click()
+		cy.get('[data-cy="product-list"]')
+			.find('[data-cy="product-item"]')
+			.should('have.length', 5)
 	})
 })
