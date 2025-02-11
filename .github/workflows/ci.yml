@@ -2,9 +2,9 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
   pull_request:
-    branches: [main]
+    branches: [main, develop]
 
 jobs:
   test:
@@ -21,23 +21,10 @@ jobs:
           cache: 'pnpm'
 
       - name: Install pnpm
-        run: npm install -g pnpm
+        run: corepack enable && corepack prepare pnpm@latest --activate
 
       - name: Install dependencies
         run: pnpm install
 
-      - name: Start the app (Vite)
-        run: pnpm dev &
-        env:
-          CYPRESS_BASE_URL: 'http://localhost:5173'
-
-      - name: Run Cypress E2E tests
-        uses: cypress-io/github-action@v6
-        with:
-          build: pnpm run build
-          start: pnpm run dev
-          wait-on: 'http://localhost:5173'
-          browser: chrome
-
-      - name: Run Cypress Component Tests
-        run: pnpm cypress run --component
+      - name: Run tests
+        run: pnpm test
