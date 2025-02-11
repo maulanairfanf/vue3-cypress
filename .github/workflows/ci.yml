@@ -30,6 +30,9 @@ jobs:
         env:
           CYPRESS_BASE_URL: 'http://localhost:5173'
 
+      - name: Install Cypress Binary
+        run: pnpm cypress install
+
       - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
