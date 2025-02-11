@@ -22,20 +22,36 @@ jobs:
       - name: Install pnpm
         run: npm i -g pnpm
 
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
       - name: Install dependencies
         run: pnpm install
 
+      - name: Install Cypress Binary
+        run: pnpm cypress install
+
+      # ✅ Run Component Tests
+      - name: Run Cypress Component Tests
+        run: pnpm cypress run --component
+
+      # ✅ Start Vite for E2E tests
       - name: Start Vite in the background
         run: pnpm run dev &
         env:
           CYPRESS_BASE_URL: 'http://localhost:5173'
 
-      - name: Install Cypress Binary
-        run: pnpm cypress install
+      - name: Wait for App to be Ready
+        run: npx wait-on http://localhost:5173
 
-      - name: Run Cypress Tests
+      # ✅ Run End-to-End (E2E) Tests
+      - name: Run Cypress E2E Tests
         uses: cypress-io/github-action@v6
         with:
-          start: pnpm run dev
           wait-on: 'http://localhost:5173'
           browser: chrome
