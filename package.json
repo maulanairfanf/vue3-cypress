@@ -1,21 +1,21 @@
 {
-  "name": "vue3-cypress",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "vue": "^3.4.35"
-  },
-  "devDependencies": {
-    "@cypress/vite-dev-server": "^5.1.1",
-    "@cypress/vue": "^6.0.1",
-    "@vitejs/plugin-vue": "^5.1.2",
-    "cypress": "^13.17.0",
-    "vite": "^5.4.0"
-  }
+	"name": "vue3-cypress",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "vite preview"
+	},
+	"dependencies": {
+		"vue": "^3.4.35"
+	},
+	"devDependencies": {
+		"@cypress/vite-dev-server": "^5.1.1",
+		"@cypress/vue": "^6.0.1",
+		"@vitejs/plugin-vue": "^5.1.2",
+		"cypress": "^13.17.0",
+		"vite": "^5.4.0"
+	}
 }

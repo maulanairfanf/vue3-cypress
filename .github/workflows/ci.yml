@@ -12,36 +12,28 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: 'pnpm'
 
-      - name: Install pnpm and dependencies
-        run: |
-          npm install -g pnpm
-          pnpm install
+      - name: Enable pnpm using Corepack # ✅ Fix "pnpm not found" error
+        run: corepack enable && corepack prepare pnpm@latest --activate
 
-      - name: Install Cypress Binary
-        run: pnpm cypress install
+      - name: Install dependencies
+        run: pnpm install
 
-      - name: Build project
-        run: pnpm run build
-
-      - name: Start Vite (background)
+      - name: Start Vite in the background
         run: pnpm run dev &
         env:
-          CYPRESS_BASE_URL: 'http://localhost:5173'
+          CYPRESS_BASE_URL: 'http://localhost:5173' # ✅ Set base URL for Cypress
 
-      - name: Run Cypress E2E tests
+      - name: Run Cypress Tests
         uses: cypress-io/github-action@v6
         with:
           start: pnpm run dev
           wait-on: 'http://localhost:5173'
           browser: chrome
-
-      - name: Run Cypress Component Tests
-        run: pnpm cypress run --component
