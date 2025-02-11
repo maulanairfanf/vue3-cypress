@@ -20,11 +20,32 @@ jobs:
           node-version: 18
           cache: 'pnpm'
 
-      - name: Install pnpm
-        run: corepack enable && corepack prepare pnpm@latest --activate
+      - name: Install pnpm # ✅ Install pnpm explicitly
+        run: npm install -g pnpm
+
+      - name: Show pnpm version # ✅ Verify pnpm is installed
+        run: pnpm --version
 
       - name: Install dependencies
         run: pnpm install
 
-      - name: Run tests
-        run: pnpm test
+      - name: Run lint checks # (Optional) If you use ESLint
+        run: pnpm run lint
+
+      - name: Build project
+        run: pnpm run build
+
+      - name: Start Vite (background)
+        run: pnpm run dev &
+        env:
+          CYPRESS_BASE_URL: 'http://localhost:5173'
+
+      - name: Run Cypress E2E tests
+        uses: cypress-io/github-action@v6
+        with:
+          start: pnpm run dev
+          wait-on: 'http://localhost:5173'
+          browser: chrome
+
+      - name: Run Cypress Component Tests
+        run: pnpm cypress run --component
