@@ -71,4 +71,4 @@ jobs:
         run: pnpm run build
 
       - name: Deploy to Production # 🚀 Example: Deploy to Vercel
-        run: pnpm dlx vercel --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: pnpm dlx vercel --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
