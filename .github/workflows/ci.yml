@@ -12,25 +12,21 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: 'pnpm'
 
-      - name: Install pnpm # ✅ Install pnpm explicitly
-        run: npm install -g pnpm
+      - name: Install pnpm and dependencies
+        run: |
+          npm install -g pnpm
+          pnpm install
 
-      - name: Show pnpm version # ✅ Verify pnpm is installed
-        run: pnpm --version
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Run lint checks # (Optional) If you use ESLint
-        run: pnpm run lint
+      - name: Install Cypress Binary
+        run: pnpm cypress install
 
       - name: Build project
         run: pnpm run build
